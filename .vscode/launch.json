@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "main",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "FaceFeatures",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/FaceFeatures.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "MainGUI",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/MainGUI.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "getpulse",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/how-to-make-webcam-pulse-detector-with-python-opencv/get_pulse.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/how-to-make-webcam-pulse-detector-with-python-opencv"
+        }
+    ]
+}
