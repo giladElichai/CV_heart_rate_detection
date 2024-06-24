@@ -50,20 +50,13 @@ class Controller:
                                         command=partial(self.checkbox_selection, 1))
         self.checkbox1.grid(row=0, column=1, padx=10, pady=10, sticky='w')
         
-        # self.checkbox2 = tk.Checkbutton(self.checkbox_frame, text="Checkbox 2", variable=self.checkbox2_var,
-        #                                 command=partial(self.checkbox_selection, 2))
-        # self.checkbox2.grid(row=1, column=1, padx=10, pady=10, sticky='w')
-
-        # self.checkbox3 = tk.Checkbutton(self.checkbox_frame, text="Checkbox 3", variable=self.checkbox3_var,
-        #                                 command=partial(self.checkbox_selection, 3))
-        # self.checkbox3.grid(row=2, column=1, padx=10, pady=10, sticky='w')
         
         # # Create a label and entry widget for program output
-        self.output_label = tk.Label(self.checkbox_frame, text="HR:")
+        self.output_label = tk.Label(self.checkbox_frame, text="HR:", font=('Times', 24))
         self.output_label.grid(row=1, column=0, padx=10, pady=10, sticky='w')
 
         self.output_entry_var = tk.StringVar()
-        self.output_entry = tk.Entry(self.checkbox_frame, textvariable=self.output_entry_var, state='readonly')
+        self.output_entry = tk.Entry(self.checkbox_frame, textvariable=self.output_entry_var, state='readonly', font=('Times', 24))
         self.output_entry.grid(row=1, column=1, padx=10, pady=10, sticky='we')
         self.output_entry_var.set(str(0))
 
