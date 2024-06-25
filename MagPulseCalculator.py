@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 import scipy.signal as signal
 
+import matplotlib.pyplot as plt
+
 ## ======================================================================================
 ## Helper functions
 
@@ -191,6 +193,7 @@ class CMagPulseCalculator:
     
     def set_fps(self, fps):
         self.fps = fps 
+        self.buffer_size = int(fps*8)
     
     
     def plot_bpm(self):
@@ -257,8 +260,10 @@ class CMagPulseCalculator:
     def approximate_pulse(self):
         
         NUM_FRAMES = len(self.gaussian_pyramids)
-        if NUM_FRAMES < 2*self.fps:
+        if NUM_FRAMES < 4*self.fps:
             return self.bpm
+        
+        self.fps = float(NUM_FRAMES) / (self.times[-1] - self.times[0])
         
         # mag = mag_colors(self.face_crops, self.fps, self.freq_lo, self.freq_hi, self.level, self.alpha)
          
@@ -266,7 +271,10 @@ class CMagPulseCalculator:
         magnified = self.magnified_crops()
         for i in range(len(magnified)):
             forehead_location = self.crop_locations[i]["forehead_location"]
+            face_location = self.crop_locations[i]["face_bbox"]
+            # value = self.bbox_color_values(magnified[i], forehead_location)
             value = self.bbox_color_values(magnified[i], forehead_location)
+            # value = np.sum(magnified[i], axis=(0,1))
             values.append(value)
         values = np.array(values)
         
@@ -278,6 +286,13 @@ class CMagPulseCalculator:
         rates = np.abs(np.fft.rfft(reds))/NUM_FRAMES
         peak_idx, _ = signal.find_peaks(rates, height=1000)
         self.bpm = freqs[peak_idx].min() * 60
+        
+        if NUM_FRAMES > self.buffer_size:
+            self.times = self.times[-self.buffer_size:]
+            self.face_crops = self.face_crops[-self.buffer_size:]
+            self.crop_locations = self.crop_locations[-self.buffer_size:]
+            self.yiq_face_crops = self.yiq_face_crops[-self.buffer_size:]
+            self.gaussian_pyramids = self.gaussian_pyramids[-self.buffer_size:]
             
         return self.bpm
         
@@ -330,14 +345,6 @@ class CMagPulseCalculator:
         pyramid = gaussian_pyramid(yiq_face, self.level)
         self.gaussian_pyramids.append(pyramid)
          
-        L = len(self.face_crops)
-        if L > self.buffer_size:
-            self.times = self.times[-self.buffer_size:]
-            self.face_crops = self.face_crops[-self.buffer_size:]
-            self.crop_locations = self.crop_locations[-self.buffer_size:]
-            self.yiq_face_crops = self.yiq_face_crops[-self.buffer_size:]
-            self.gaussian_pyramids = self.face_crops[-self.buffer_size:]
-            
         
         return
     
